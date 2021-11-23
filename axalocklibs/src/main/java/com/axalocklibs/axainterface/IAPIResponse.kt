@@ -1,4 +1,4 @@
-package com.axalocklibs.`interface`
+package com.axalocklibs.axainterface
 
 interface IAPIResponse {
     fun onSuccess(response: String, tag: String)

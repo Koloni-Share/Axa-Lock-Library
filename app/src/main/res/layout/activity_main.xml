@@ -28,6 +28,7 @@
             android:layout_below="@+id/tvAssetID"
             android:gravity="center_vertical"
             android:hint="309"
+            android:text="309"
             android:textColor="@android:color/black"
             android:textSize="@dimen/_14sdp"
             android:visibility="visible" />
@@ -49,7 +50,8 @@
             android:layout_below="@+id/tvMacID"
             android:digits="0123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:gravity="center_vertical"
-            android:hint="F3:01:AD:51:E9:2E"
+            android:hint="D9:A1:63:3D:E7:7A"
+            android:text="D9:A1:63:3D:E7:7A"
             android:textColor="@android:color/black"
             android:textSize="@dimen/_14sdp" />
 

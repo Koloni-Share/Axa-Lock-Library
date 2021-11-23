@@ -1,4 +1,4 @@
-package com.axalocklibs.`interface`
+package com.axalocklibs.axainterface
 
 interface IAPIAxaLockCallback {
 

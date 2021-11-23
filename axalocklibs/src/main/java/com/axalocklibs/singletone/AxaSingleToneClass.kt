@@ -10,8 +10,11 @@ import android.os.Handler
 import android.os.IBinder
 import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.axalocklibs.`interface`.IAPIAxaLockCallback
-import com.axalocklibs.`interface`.IAPIResponse
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.BuildConfig
+import com.androidnetworking.interceptors.HttpLoggingInterceptor
+import com.axalocklibs.axainterface.IAPIAxaLockCallback
+import com.axalocklibs.axainterface.IAPIResponse
 import com.axalocklibs.service.AxaLockService
 import com.axalocklibs.service.AxaLockService.LocalBinder
 import com.axalocklibs.webservice.ApiRequest
@@ -49,6 +52,7 @@ class AxaSingleToneClass : IAPIResponse {
 
     fun serviceInit(activity: Activity?, axaLockInterface: IAPIAxaLockCallback) {
 
+        initPrefs(activity)
         this.axaLockInterface = axaLockInterface
         mBtAdapter = BluetoothAdapter.getDefaultAdapter()
         if (mBtAdapter == null) {
@@ -136,7 +140,7 @@ class AxaSingleToneClass : IAPIResponse {
                             onUpdateAxaEKey(
                                 2, connectToClickMacId,
                                 passBookingObjectId, currnetHandleConnectPosition,
-                                0, webServiceURL, appVersion, authHeader
+                                0, webServiceURL, appVersion, authHeader, true
                             )
                         } else if ((isDisconnectByClick == "1")) {
                             axaLockInterface.onAxaDisconnected("2", "")
@@ -329,7 +333,7 @@ class AxaSingleToneClass : IAPIResponse {
         handleBonding()
         Log.d("TAG", "... onActivityResultdevice.address==" + mDevice + "mserviceValue" + mService)
         if (mService != null) {
-            isDisconnectByClick = "1"
+            isDisconnectByClick = "2"
             axaLockInterface.onAxaConnecting("24" ,"")
             try {
                 mService!!.connect(connectToClickMacId)
@@ -383,7 +387,8 @@ class AxaSingleToneClass : IAPIResponse {
         axaLockUnLockCounter: Int,
         webServiceURL: String,
         appVersion: String,
-        authHeader: String
+        authHeader: String,
+        isRetryToConnectIfDisconnect: Boolean
     ) {
         this.passBookingObjectId = passBookingObjectId
         currnetHandleConnectPosition = position
@@ -502,6 +507,25 @@ class AxaSingleToneClass : IAPIResponse {
                 i += 2
             }
             return data
+        }
+    }
+
+    fun initPrefs(activity: Activity?){
+        try {
+            AndroidNetworking.initialize(activity)
+
+            if (BuildConfig.DEBUG) {
+                AndroidNetworking.enableLogging(HttpLoggingInterceptor.Level.BODY)
+            }
+
+            Prefs.Builder()
+                .setContext(activity)
+                .setPrefsName(activity?.packageName)
+                .setUseDefaultSharedPreference(true)
+                .build()
+
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 }

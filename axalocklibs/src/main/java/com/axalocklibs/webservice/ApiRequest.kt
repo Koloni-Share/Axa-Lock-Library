@@ -3,7 +3,7 @@ package com.axalocklibs.webservice
 import android.app.Activity
 import android.util.Log
 import com.androidnetworking.common.Priority
-import com.axalocklibs.`interface`.IAPIResponse
+import com.axalocklibs.axainterface.IAPIResponse
 import com.rx2androidnetworking.Rx2AndroidNetworking
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers

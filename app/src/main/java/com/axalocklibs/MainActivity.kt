@@ -9,7 +9,7 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import com.axalocklibs.`interface`.IAPIAxaLockCallback
+import com.axalocklibs.axainterface.IAPIAxaLockCallback
 import com.axalocklibs.singletone.AxaSingleToneClass
 
 /**
@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity(), IAPIAxaLockCallback {
                     2, edtMacID.text.toString(),
                     edtAssetID.text.toString(), 0, 1 ,
                     "https://kolonishare.com/design/ws/v11/update_ekey",
-                    "5.1.3" ,"Basic YWRtaW46MTIzNA=="
+                    "5.1.3" ,"Basic YWRtaW46MTIzNA==" , true
                 )
             }
         }
