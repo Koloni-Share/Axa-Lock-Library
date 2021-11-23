@@ -66,6 +66,7 @@ class AxaSingleToneClass : IAPIResponse {
         LocalBroadcastManager.getInstance(mActivity!!).registerReceiver(
             ERLStatusChangeReceiver!!, makeGattUpdateIntentFilter()
         )
+        scanLeDevice(true)
     }
 
     fun handleConnectClick(
@@ -76,7 +77,6 @@ class AxaSingleToneClass : IAPIResponse {
         this.connectToClickMacId = connectToClickMacId
         this.passBookingObjectId = passBookingObjectId
         this.webServiceURL = webServiceURL
-        scanLeDevice(true)
         mOTPasskeyNr = 0
         mWaitingWriteChar = false
         connectAxaToLock()
@@ -336,6 +336,7 @@ class AxaSingleToneClass : IAPIResponse {
             isDisconnectByClick = "2"
             axaLockInterface.onAxaConnecting("24" ,"")
             try {
+                scanLeDevice(false)
                 mService!!.connect(connectToClickMacId)
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -451,6 +452,7 @@ class AxaSingleToneClass : IAPIResponse {
                 mService!!.stopSelf()
                 mService = null
             }
+            scanLeDevice(false)
         } catch (ignore: Exception) {
             Log.e(TAG, ignore.toString())
         }
