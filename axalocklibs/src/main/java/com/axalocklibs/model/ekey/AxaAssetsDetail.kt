@@ -2,7 +2,7 @@ package com.kolonishare.booking.model.ekey
 
 import com.google.gson.annotations.SerializedName
 
-class ASSETSDETAIL {
+class AxaAssetsDetail {
 
     @SerializedName("axa_ekey")
     var axaEkey: String? = ""

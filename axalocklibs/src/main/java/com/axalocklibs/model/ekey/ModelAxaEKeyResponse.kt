@@ -14,5 +14,5 @@ class ModelAxaEKeyResponse {
     var isISACTIVE = false
 
     @SerializedName("ASSETS_DETAIL")
-    var aSSETSDETAIL: ASSETSDETAIL? = null
+    var aSSETSDETAIL: AxaAssetsDetail? = null
 }

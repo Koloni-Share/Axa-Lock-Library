@@ -47,7 +47,7 @@ dependencies {
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'com.pixplicity.easyprefs:library:1.9.0'
     implementation project(':axalocklibs')
-//    implementation 'com.github.Koloni-Share:Axa-Lock-Library:1.0'
+//    implementation 'com.github.Koloni-Share:Axa-Lock-Library:1.2'
     // for size
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     // google support libs

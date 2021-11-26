@@ -3,7 +3,7 @@ package com.axalocklibs.webservice
 import android.app.Activity
 import android.util.Log
 import com.androidnetworking.common.Priority
-import com.axalocklibs.axainterface.IAPIResponse
+import com.axalocklibs.axainterface.IAPIAxaResponse
 import com.rx2androidnetworking.Rx2AndroidNetworking
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -13,14 +13,14 @@ import okhttp3.OkHttpClient
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-object ApiRequest {
+object AxaApiRequest {
     private var response = ""
     fun callPOSTAPI(
         activity: Activity?,
         url: String,
         params: HashMap<String, Any>,
         tag: String,
-        apiResponse: IAPIResponse,
+        apiResponse: IAPIAxaResponse,
         appVersion: String,
         authorizationHeader: String,
         bearerAuthorization: String
