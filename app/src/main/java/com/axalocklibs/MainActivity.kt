@@ -86,9 +86,9 @@ class MainActivity : AppCompatActivity(), IAPIAxaLockCallback {
      */
     override fun onStart() {
         super.onStart()
+        erlSingleToneClass = null
         erlSingleToneClass = AxaSingleToneClass()
         erlSingleToneClass!!.serviceInit(this@MainActivity, this@MainActivity)
-
     }
 
     /**
@@ -162,5 +162,15 @@ class MainActivity : AppCompatActivity(), IAPIAxaLockCallback {
             prgBar.visibility = View.VISIBLE
             erlSingleToneClass!!.lockAndUnlockAxaLock()
         }, 1000)
+    }
+
+    override fun onRetryInitService() {
+        onStart()
+        erlSingleToneClass!!.onUpdateAxaEKey(
+            2, edtMacID.text.toString(),
+            edtAssetID.text.toString(), 0, 1 ,
+            "https://kolonishare.com/design/ws/v11/update_ekey",
+            "5.1.3" ,"Basic YWRtaW46MTIzNA==" , true
+        )
     }
 }

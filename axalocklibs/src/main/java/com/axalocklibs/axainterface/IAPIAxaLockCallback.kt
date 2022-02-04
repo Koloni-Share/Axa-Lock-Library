@@ -11,5 +11,6 @@ interface IAPIAxaLockCallback {
     fun onAxaEkeyUpdatedSuccessfully(eventType:String, lockValue: String)
     fun onAxaConnecting(eventType:String, lockValue: String)
     fun onAxaStartLockUnlock(eventType:String, lockValue: String)
+    fun onRetryInitService()
 
 }

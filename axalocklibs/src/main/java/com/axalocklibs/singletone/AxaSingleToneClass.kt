@@ -436,6 +436,9 @@ class AxaSingleToneClass : IAPIAxaResponse {
                     params, TAG_AXA_UPDATE_EKEY, this, appVersion, authHeader, ""
                 )
             }
+        }else{
+            Log.e("axaCnLib", "mService == null")
+            axaLockInterface.onRetryInitService()
         }
     }
 
