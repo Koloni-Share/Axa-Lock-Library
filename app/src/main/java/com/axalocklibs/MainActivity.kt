@@ -1,6 +1,7 @@
 package com.axalocklibs
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.axalocklibs.axainterface.IAPIAxaLockCallback
 import com.axalocklibs.singletone.AxaSingleToneClass
 
@@ -69,6 +71,14 @@ class MainActivity : AppCompatActivity(), IAPIAxaLockCallback {
             tvDisConnect.startAnimation(animZoomOut)
             erlSingleToneClass!!.onDisconnectAxa()
         }
+
+//        val intent = Intent(this@MainActivity, TrackLocatonForegroundService::class.java)
+//        intent.putExtra("service", true)
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            startForegroundService(intent)
+//        } else {
+//            startService(intent)
+//        }
     }
 
     /**

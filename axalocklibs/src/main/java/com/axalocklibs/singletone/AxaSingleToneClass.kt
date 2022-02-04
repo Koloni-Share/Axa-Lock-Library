@@ -67,6 +67,7 @@ class AxaSingleToneClass : IAPIAxaResponse {
             ERLStatusChangeReceiver!!, makeGattUpdateIntentFilter()
         )
         scanLeDevice(true)
+        Log.e("axaCnLib", "serviceInit")
     }
 
     fun handleConnectClick(
@@ -303,14 +304,17 @@ class AxaSingleToneClass : IAPIAxaResponse {
     private val mLeScanCallback: ScanCallback = object : ScanCallback() {
         override fun onScanResult(callbackType: Int, result: ScanResult) {
             super.onScanResult(callbackType, result)
+            Log.e("mLeScanCallback_onScanResult", result.toString())
         }
 
         override fun onBatchScanResults(results: List<ScanResult>) {
             super.onBatchScanResults(results)
+            Log.e("mLeScanCallback_onBatchScanResults", "" + results.size)
         }
 
         override fun onScanFailed(errorCode: Int) {
             super.onScanFailed(errorCode)
+            Log.e("mLeScanCallback_onScanFailed", "" + errorCode)
         }
     }
 
@@ -331,11 +335,11 @@ class AxaSingleToneClass : IAPIAxaResponse {
     fun connectAxaToLock() {
         mDevice = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(connectToClickMacId)
         handleBonding()
-        Log.d("TAG", "... onActivityResultdevice.address==" + mDevice + "mserviceValue" + mService)
         if (mService != null) {
             isDisconnectByClick = "2"
-            axaLockInterface.onAxaConnecting("24" ,"")
+            axaLockInterface.onAxaConnecting("24", "")
             try {
+                Log.e("axaCnLib", "StartConnect")
                 scanLeDevice(false)
                 mService!!.connect(connectToClickMacId)
             } catch (e: Exception) {
@@ -346,7 +350,8 @@ class AxaSingleToneClass : IAPIAxaResponse {
 
     @Throws(Exception::class)
     private fun parseUpdateAxaEkey(responce: String) {
-        axaLockInterface.onAxaEkeyUpdatedSuccessfully("23","")
+        Log.e("axaCnLib", "callPOSTAPIRESP")
+        axaLockInterface.onAxaEkeyUpdatedSuccessfully("23", "")
         val gson = Gson()
         val responseModelLockInst = gson.fromJson(responce, ModelAxaEKeyResponse::class.java)
         mOTPasskeyNr = 0
@@ -398,26 +403,31 @@ class AxaSingleToneClass : IAPIAxaResponse {
         this.appVersion = appVersion
         this.authHeader = authHeader
         if (mService != null) {
+            Log.e("axaCnLib", "mService != null")
             if (mService!!.isConnected) {
+                Log.e("axaCnLib", "mService!!.isConnected")
                 if (axaLockUnLockCounter == 12) {
+                    Log.e("axaCnLib", "axaLockUnLockCounter == 12")
                     isDisconnectByClick = "2"
                     mService!!.disconnect()
                     //                    Constants.showFailureCustomToast(mActivity, "Please press again...");
                 } else {
                     if (position == lastHandleConnectPosition) {
+                        Log.e("axaCnLib", "position == lastHandleConnectPosition" + position + " :" + lastHandleConnectPosition)
                         lockAndUnlockAxaLock()
                     } else {
+                        Log.e("axaCnLib", "position != lastHandleConnectPosition" + position + " :" + lastHandleConnectPosition)
                         isDisconnectByClick = "2"
                         mService!!.disconnect()
                         //                        Constants.showFailureCustomToast(mActivity, "Please press again...");
                     }
                 }
             } else {
+                Log.e("axaCnLib", "callPOSTAPI")
                 this.passBookingObjectId = passBookingObjectId
                 currnetHandleConnectPosition = position
                 this.connectToClickMacId = connectToClickMacId
-                axaLockInterface.onAxaStartEkeyUpdate("22" ,"")
-                Log.e("testing_log_update_key_", "start updating key")
+                axaLockInterface.onAxaStartEkeyUpdate("22", "")
                 val params = HashMap<String, Any>()
                 params["object_id"] = passBookingObjectId
                 params["passkey_type"] = "otp"
@@ -512,7 +522,7 @@ class AxaSingleToneClass : IAPIAxaResponse {
         }
     }
 
-    fun initPrefs(activity: Activity?){
+    fun initPrefs(activity: Activity?) {
         try {
             AndroidNetworking.initialize(activity)
 
