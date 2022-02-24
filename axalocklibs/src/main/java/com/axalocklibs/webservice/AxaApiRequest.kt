@@ -14,6 +14,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 object AxaApiRequest {
+
     private var response = ""
     fun callPOSTAPI(
         activity: Activity?,

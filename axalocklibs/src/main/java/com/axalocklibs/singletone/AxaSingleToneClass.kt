@@ -49,6 +49,7 @@ class AxaSingleToneClass : IAPIAxaResponse {
     private var lastHandleConnectPosition = -1
     private var currnetHandleConnectPosition = 0
     private lateinit var axaLockInterface: IAPIAxaLockCallback
+    private var disconnectCounter = 0
 
     fun serviceInit(activity: Activity?, axaLockInterface: IAPIAxaLockCallback) {
 
@@ -135,19 +136,31 @@ class AxaSingleToneClass : IAPIAxaResponse {
                     mState = ERL_PROFILE_DISCONNECTED
                     mService!!.close()
                     Log.e("testing_log_disconne_", mEKeyAscii + "")
-                    mActivity!!.runOnUiThread({
-                        if ((isDisconnectByClick == "2")) {
-                            isDisconnectByClick = "1"
-                            onUpdateAxaEKey(
-                                2, connectToClickMacId,
-                                passBookingObjectId, currnetHandleConnectPosition,
-                                0, webServiceURL, appVersion, authHeader, true
-                            )
-                        } else if ((isDisconnectByClick == "1")) {
+                    mActivity!!.runOnUiThread {
+                        if (disconnectCounter == 3) {
                             axaLockInterface.onAxaDisconnected("2", "")
-                        } else if ((isDisconnectByClick == "3")) {
+                        } else {
+                            if ((isDisconnectByClick == "2")) {
+                                isDisconnectByClick = "1"
+                                disconnectCounter++
+                                onUpdateAxaEKey(
+                                    2,
+                                    connectToClickMacId,
+                                    passBookingObjectId,
+                                    currnetHandleConnectPosition,
+                                    0,
+                                    webServiceURL,
+                                    appVersion,
+                                    authHeader,
+                                    true,
+                                    disconnectCounter
+                                )
+                            } else if ((isDisconnectByClick == "1")) {
+                                axaLockInterface.onAxaDisconnected("2", "")
+                            } else if ((isDisconnectByClick == "3")) {
+                            }
                         }
-                    })
+                    }
                 }
             }
 
@@ -394,7 +407,8 @@ class AxaSingleToneClass : IAPIAxaResponse {
         webServiceURL: String,
         appVersion: String,
         authHeader: String,
-        isRetryToConnectIfDisconnect: Boolean
+        isRetryToConnectIfDisconnect: Boolean,
+        disconnectCounter: Int
     ) {
         this.passBookingObjectId = passBookingObjectId
         currnetHandleConnectPosition = position
@@ -402,6 +416,8 @@ class AxaSingleToneClass : IAPIAxaResponse {
         this.webServiceURL = webServiceURL
         this.appVersion = appVersion
         this.authHeader = authHeader
+        this.disconnectCounter = disconnectCounter
+
         if (mService != null) {
             Log.e("axaCnLib", "mService != null")
             if (mService!!.isConnected) {
@@ -413,10 +429,16 @@ class AxaSingleToneClass : IAPIAxaResponse {
                     //                    Constants.showFailureCustomToast(mActivity, "Please press again...");
                 } else {
                     if (position == lastHandleConnectPosition) {
-                        Log.e("axaCnLib", "position == lastHandleConnectPosition" + position + " :" + lastHandleConnectPosition)
+                        Log.e(
+                            "axaCnLib",
+                            "position == lastHandleConnectPosition" + position + " :" + lastHandleConnectPosition
+                        )
                         lockAndUnlockAxaLock()
                     } else {
-                        Log.e("axaCnLib", "position != lastHandleConnectPosition" + position + " :" + lastHandleConnectPosition)
+                        Log.e(
+                            "axaCnLib",
+                            "position != lastHandleConnectPosition" + position + " :" + lastHandleConnectPosition
+                        )
                         isDisconnectByClick = "2"
                         mService!!.disconnect()
                         //                        Constants.showFailureCustomToast(mActivity, "Please press again...");
@@ -436,7 +458,7 @@ class AxaSingleToneClass : IAPIAxaResponse {
                     params, TAG_AXA_UPDATE_EKEY, this, appVersion, authHeader, ""
                 )
             }
-        }else{
+        } else {
             Log.e("axaCnLib", "mService == null")
             axaLockInterface.onRetryInitService()
         }

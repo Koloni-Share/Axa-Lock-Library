@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.axalocklibs.axainterface.IAPIAxaLockCallback
 import com.axalocklibs.singletone.AxaSingleToneClass
+import com.axalocklibs.webservice.AxaApiRequest
 
 /**
  * Axa Lock library Create by Nirav Mehta
@@ -60,9 +61,9 @@ class MainActivity : AppCompatActivity(), IAPIAxaLockCallback {
                 prgBar.visibility = View.VISIBLE
                 erlSingleToneClass!!.onUpdateAxaEKey(
                     2, edtMacID.text.toString(),
-                    edtAssetID.text.toString(), 0, 1 ,
+                    edtAssetID.text.toString(), 0, 1,
                     "https://kolonishare.com/design/ws/v11/update_ekey",
-                    "5.1.3" ,"Basic YWRtaW46MTIzNA==" , true
+                    "5.1.3", "Basic YWRtaW46MTIzNA==", true, 0
                 )
             }
         }
@@ -168,9 +169,9 @@ class MainActivity : AppCompatActivity(), IAPIAxaLockCallback {
         onStart()
         erlSingleToneClass!!.onUpdateAxaEKey(
             2, edtMacID.text.toString(),
-            edtAssetID.text.toString(), 0, 1 ,
+            edtAssetID.text.toString(), 0, 1,
             "https://kolonishare.com/design/ws/v11/update_ekey",
-            "5.1.3" ,"Basic YWRtaW46MTIzNA==" , true
+            "5.1.3", "Basic YWRtaW46MTIzNA==", true, 0
         )
     }
 }
