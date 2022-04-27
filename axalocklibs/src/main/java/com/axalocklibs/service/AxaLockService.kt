@@ -208,7 +208,6 @@ class AxaLockService : Service() {
             return
         }
         mBluetoothGatt!!.disconnect()
-        // mBluetoothGatt.close();
     }
 
     /**

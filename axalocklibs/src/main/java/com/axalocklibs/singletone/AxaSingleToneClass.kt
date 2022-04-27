@@ -11,7 +11,6 @@ import android.os.IBinder
 import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.androidnetworking.AndroidNetworking
-import com.androidnetworking.BuildConfig
 import com.androidnetworking.interceptors.HttpLoggingInterceptor
 import com.axalocklibs.axainterface.IAPIAxaLockCallback
 import com.axalocklibs.axainterface.IAPIAxaResponse
@@ -317,12 +316,12 @@ class AxaSingleToneClass : IAPIAxaResponse {
     private val mLeScanCallback: ScanCallback = object : ScanCallback() {
         override fun onScanResult(callbackType: Int, result: ScanResult) {
             super.onScanResult(callbackType, result)
-            Log.e("mLeScanCallback_onScanResult", result.toString())
+//            Log.e("mLeScanCallback_onScanResult", result.toString())
         }
 
         override fun onBatchScanResults(results: List<ScanResult>) {
             super.onBatchScanResults(results)
-            Log.e("mLeScanCallback_onBatchScanResults", "" + results.size)
+//            Log.e("mLeScanCallback_onBatchScanResults", "" + results.size)
         }
 
         override fun onScanFailed(errorCode: Int) {
@@ -551,7 +550,7 @@ class AxaSingleToneClass : IAPIAxaResponse {
         try {
             AndroidNetworking.initialize(activity)
 
-            if (BuildConfig.DEBUG) {
+            if (com.axalocklibs.BuildConfig.DEBUG) {
                 AndroidNetworking.enableLogging(HttpLoggingInterceptor.Level.BODY)
             }
 
