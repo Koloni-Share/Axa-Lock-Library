@@ -3,11 +3,13 @@ package com.axalocklibs.singletone
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothManager
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanResult
 import android.content.*
 import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.androidnetworking.AndroidNetworking
@@ -54,7 +56,9 @@ class AxaSingleToneClass : IAPIAxaResponse {
 
         initPrefs(activity)
         this.axaLockInterface = axaLockInterface
-        mBtAdapter = BluetoothAdapter.getDefaultAdapter()
+        var blManager = activity?.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        mBtAdapter = blManager.adapter
+
         if (mBtAdapter == null) {
         }
         mActivity = activity
@@ -294,9 +298,9 @@ class AxaSingleToneClass : IAPIAxaResponse {
 
     fun scanLeDevice(enable: Boolean) {
         try {
-            val handler = Handler()
             if (mBtAdapter == null) {
-                mBtAdapter = BluetoothAdapter.getDefaultAdapter()
+                var blManager = mActivity?.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+                mBtAdapter = blManager.adapter
             }
             val bluetoothLeScanner = mBtAdapter!!.bluetoothLeScanner
             try {
