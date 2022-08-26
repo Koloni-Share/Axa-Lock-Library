@@ -1,5 +1,6 @@
 package com.axalocklibs.singletone
 
+import android.Manifest
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
@@ -7,10 +8,11 @@ import android.bluetooth.BluetoothManager
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanResult
 import android.content.*
+import android.content.pm.PackageManager
 import android.os.Handler
 import android.os.IBinder
-import android.os.Looper
 import android.util.Log
+import androidx.core.app.ActivityCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.interceptors.HttpLoggingInterceptor
@@ -299,7 +301,8 @@ class AxaSingleToneClass : IAPIAxaResponse {
     fun scanLeDevice(enable: Boolean) {
         try {
             if (mBtAdapter == null) {
-                var blManager = mActivity?.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+                var blManager =
+                    mActivity?.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
                 mBtAdapter = blManager.adapter
             }
             val bluetoothLeScanner = mBtAdapter!!.bluetoothLeScanner
@@ -458,7 +461,8 @@ class AxaSingleToneClass : IAPIAxaResponse {
                 params["passkey_type"] = "otp"
                 AxaApiRequest.callPOSTAPI(
                     mActivity, webServiceURL,
-                    params, TAG_AXA_UPDATE_EKEY, this, appVersion, authHeader, ""
+                    params, TAG_AXA_UPDATE_EKEY, this, appVersion, authHeader, "",
+                    false, "", ""
                 )
             }
         } else {
@@ -466,6 +470,75 @@ class AxaSingleToneClass : IAPIAxaResponse {
             axaLockInterface.onRetryInitService()
         }
     }
+
+    fun onUpdateAxaEKey(
+        connectBtn: Int, connectToClickMacId: String,
+        passBookingObjectId: String, position: Int,
+        axaLockUnLockCounter: Int,
+        webServiceURL: String,
+        appVersion: String,
+        authHeader: String,
+        isRetryToConnectIfDisconnect: Boolean,
+        disconnectCounter: Int,
+        isWhiteLabel: Boolean,
+        whiteLabelPartnerKey: String,
+        whiteLablePartnerID: String
+    ) {
+        this.passBookingObjectId = passBookingObjectId
+        currnetHandleConnectPosition = position
+        this.connectToClickMacId = connectToClickMacId
+        this.webServiceURL = webServiceURL
+        this.appVersion = appVersion
+        this.authHeader = authHeader
+        this.disconnectCounter = disconnectCounter
+
+        if (mService != null) {
+            Log.e("axaCnLib", "mService != null")
+            if (mService!!.isConnected) {
+                Log.e("axaCnLib", "mService!!.isConnected")
+                if (axaLockUnLockCounter == 12) {
+                    Log.e("axaCnLib", "axaLockUnLockCounter == 12")
+                    isDisconnectByClick = "2"
+                    mService!!.disconnect()
+                    //                    Constants.showFailureCustomToast(mActivity, "Please press again...");
+                } else {
+                    if (position == lastHandleConnectPosition) {
+                        Log.e(
+                            "axaCnLib",
+                            "position == lastHandleConnectPosition" + position + " :" + lastHandleConnectPosition
+                        )
+                        lockAndUnlockAxaLock()
+                    } else {
+                        Log.e(
+                            "axaCnLib",
+                            "position != lastHandleConnectPosition" + position + " :" + lastHandleConnectPosition
+                        )
+                        isDisconnectByClick = "2"
+                        mService!!.disconnect()
+                        //                        Constants.showFailureCustomToast(mActivity, "Please press again...");
+                    }
+                }
+            } else {
+                Log.e("axaCnLib", "callPOSTAPI")
+                this.passBookingObjectId = passBookingObjectId
+                currnetHandleConnectPosition = position
+                this.connectToClickMacId = connectToClickMacId
+                axaLockInterface.onAxaStartEkeyUpdate("22", "")
+                val params = HashMap<String, Any>()
+                params["object_id"] = passBookingObjectId
+                params["passkey_type"] = "otp"
+                AxaApiRequest.callPOSTAPI(
+                    mActivity, webServiceURL,
+                    params, TAG_AXA_UPDATE_EKEY, this, appVersion, authHeader,
+                    "", isWhiteLabel, whiteLabelPartnerKey, whiteLablePartnerID
+                )
+            }
+        } else {
+            Log.e("axaCnLib", "mService == null")
+            axaLockInterface.onRetryInitService()
+        }
+    }
+
 
     private fun sendEkey() {
         val parts = Prefs.getString("mEKeyAscii", "").split("-").toTypedArray()
