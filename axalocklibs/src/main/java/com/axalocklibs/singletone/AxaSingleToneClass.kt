@@ -53,6 +53,9 @@ class AxaSingleToneClass : IAPIAxaResponse {
     private var currnetHandleConnectPosition = 0
     private lateinit var axaLockInterface: IAPIAxaLockCallback
     private var disconnectCounter = 0
+    private var isWhiteLabel: Boolean = false
+    private var whiteLabelPartnerKey: String = "partner_id_white_label"
+    private var whiteLablePartnerID: String = "303"
 
     fun serviceInit(activity: Activity?, axaLockInterface: IAPIAxaLockCallback) {
 
@@ -158,7 +161,8 @@ class AxaSingleToneClass : IAPIAxaResponse {
                                     appVersion,
                                     authHeader,
                                     true,
-                                    disconnectCounter
+                                    disconnectCounter, isWhiteLabel, whiteLabelPartnerKey,
+                                    whiteLablePartnerID
                                 )
                             } else if ((isDisconnectByClick == "1")) {
                                 axaLockInterface.onAxaDisconnected("2", "")
@@ -414,71 +418,6 @@ class AxaSingleToneClass : IAPIAxaResponse {
         appVersion: String,
         authHeader: String,
         isRetryToConnectIfDisconnect: Boolean,
-        disconnectCounter: Int
-    ) {
-        this.passBookingObjectId = passBookingObjectId
-        currnetHandleConnectPosition = position
-        this.connectToClickMacId = connectToClickMacId
-        this.webServiceURL = webServiceURL
-        this.appVersion = appVersion
-        this.authHeader = authHeader
-        this.disconnectCounter = disconnectCounter
-
-        if (mService != null) {
-            Log.e("axaCnLib", "mService != null")
-            if (mService!!.isConnected) {
-                Log.e("axaCnLib", "mService!!.isConnected")
-                if (axaLockUnLockCounter == 12) {
-                    Log.e("axaCnLib", "axaLockUnLockCounter == 12")
-                    isDisconnectByClick = "2"
-                    mService!!.disconnect()
-                    //                    Constants.showFailureCustomToast(mActivity, "Please press again...");
-                } else {
-                    if (position == lastHandleConnectPosition) {
-                        Log.e(
-                            "axaCnLib",
-                            "position == lastHandleConnectPosition" + position + " :" + lastHandleConnectPosition
-                        )
-                        lockAndUnlockAxaLock()
-                    } else {
-                        Log.e(
-                            "axaCnLib",
-                            "position != lastHandleConnectPosition" + position + " :" + lastHandleConnectPosition
-                        )
-                        isDisconnectByClick = "2"
-                        mService!!.disconnect()
-                        //                        Constants.showFailureCustomToast(mActivity, "Please press again...");
-                    }
-                }
-            } else {
-                Log.e("axaCnLib", "callPOSTAPI")
-                this.passBookingObjectId = passBookingObjectId
-                currnetHandleConnectPosition = position
-                this.connectToClickMacId = connectToClickMacId
-                axaLockInterface.onAxaStartEkeyUpdate("22", "")
-                val params = HashMap<String, Any>()
-                params["object_id"] = passBookingObjectId
-                params["passkey_type"] = "otp"
-                AxaApiRequest.callPOSTAPI(
-                    mActivity, webServiceURL,
-                    params, TAG_AXA_UPDATE_EKEY, this, appVersion, authHeader, "",
-                    false, "", ""
-                )
-            }
-        } else {
-            Log.e("axaCnLib", "mService == null")
-            axaLockInterface.onRetryInitService()
-        }
-    }
-
-    fun onUpdateAxaEKey(
-        connectBtn: Int, connectToClickMacId: String,
-        passBookingObjectId: String, position: Int,
-        axaLockUnLockCounter: Int,
-        webServiceURL: String,
-        appVersion: String,
-        authHeader: String,
-        isRetryToConnectIfDisconnect: Boolean,
         disconnectCounter: Int,
         isWhiteLabel: Boolean,
         whiteLabelPartnerKey: String,
@@ -491,6 +430,10 @@ class AxaSingleToneClass : IAPIAxaResponse {
         this.appVersion = appVersion
         this.authHeader = authHeader
         this.disconnectCounter = disconnectCounter
+
+        this.isWhiteLabel = isWhiteLabel
+        this.whiteLabelPartnerKey = whiteLabelPartnerKey
+        this.whiteLablePartnerID = whiteLablePartnerID
 
         if (mService != null) {
             Log.e("axaCnLib", "mService != null")

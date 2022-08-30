@@ -34,7 +34,7 @@ object AxaApiRequest {
             params.put(whiteLabelPartnerKey, whiteLablePartnerID)
         }
 
-        Log.e("WS_PARAM_", "$tag  : $params")
+//        Log.e("WS_PARAM_", "$tag  : $params")
         val okHttpClient = OkHttpClient().newBuilder()
             .connectTimeout(2, TimeUnit.MINUTES)
             .readTimeout(2, TimeUnit.MINUTES)
@@ -54,7 +54,7 @@ object AxaApiRequest {
                 override fun onSubscribe(d: Disposable) {}
                 override fun onNext(jsonObject: String) {
                     response = jsonObject + ""
-                    Log.e("WS_RESP_", tag + " : " + response)
+//                    Log.e("WS_RESP_", tag + " : " + response)
                 }
 
                 override fun onError(e: Throwable) {
