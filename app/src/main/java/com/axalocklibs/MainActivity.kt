@@ -63,7 +63,8 @@ class MainActivity : AppCompatActivity(), IAPIAxaLockCallback {
                     2, edtMacID.text.toString(),
                     edtAssetID.text.toString(), 0, 1,
                     "https://kolonishare.com/design/ws/v11/update_ekey",
-                    "5.1.3", "Basic YWRtaW46MTIzNA==", true, 0
+                    "5.1.3", "Basic YWRtaW46MTIzNA==", "", true, 0,
+                    false, "", ""
                 )
             }
         }
@@ -153,6 +154,14 @@ class MainActivity : AppCompatActivity(), IAPIAxaLockCallback {
         tvLockStatus.setText("Ekey and EPass Key Updated")
     }
 
+    override fun onAxaEkeyUpdatedSuccessfully(
+        eventType: String,
+        lockValue: String,
+        updatedJWTToken: String
+    ) {
+
+    }
+
     override fun onAxaConnecting(eventType: String, lockValue: String) {
         tvLockStatus.setText("Connecting...")
     }
@@ -171,7 +180,7 @@ class MainActivity : AppCompatActivity(), IAPIAxaLockCallback {
             2, edtMacID.text.toString(),
             edtAssetID.text.toString(), 0, 1,
             "https://kolonishare.com/design/ws/v11/update_ekey",
-            "5.1.3", "Basic YWRtaW46MTIzNA==", true, 0
+            "5.1.3", "Basic YWRtaW46MTIzNA==", "", true, 0, false, "", ""
         )
     }
 }

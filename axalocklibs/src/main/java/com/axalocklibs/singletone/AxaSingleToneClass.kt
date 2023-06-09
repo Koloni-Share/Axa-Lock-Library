@@ -56,6 +56,7 @@ class AxaSingleToneClass : IAPIAxaResponse {
     private var isWhiteLabel: Boolean = false
     private var whiteLabelPartnerKey: String = "partner_id_white_label"
     private var whiteLablePartnerID: String = "303"
+    private var jwtHeaderLocal = ""
 
     fun serviceInit(activity: Activity?, axaLockInterface: IAPIAxaLockCallback) {
 
@@ -160,6 +161,7 @@ class AxaSingleToneClass : IAPIAxaResponse {
                                     webServiceURL,
                                     appVersion,
                                     authHeader,
+                                    jwtHeaderLocal,
                                     true,
                                     disconnectCounter, isWhiteLabel, whiteLabelPartnerKey,
                                     whiteLablePartnerID
@@ -374,7 +376,12 @@ class AxaSingleToneClass : IAPIAxaResponse {
     @Throws(Exception::class)
     private fun parseUpdateAxaEkey(responce: String) {
         Log.e("axaCnLib", "callPOSTAPIRESP")
-        axaLockInterface.onAxaEkeyUpdatedSuccessfully("23", "")
+        if (jwtHeaderLocal.isEmpty()) {
+            axaLockInterface.onAxaEkeyUpdatedSuccessfully("23", "")
+        } else {
+            axaLockInterface.onAxaEkeyUpdatedSuccessfully("23", "", responce)
+        }
+
         val gson = Gson()
         val responseModelLockInst = gson.fromJson(responce, ModelAxaEKeyResponse::class.java)
         mOTPasskeyNr = 0
@@ -417,6 +424,7 @@ class AxaSingleToneClass : IAPIAxaResponse {
         webServiceURL: String,
         appVersion: String,
         authHeader: String,
+        jwtHeader: String,
         isRetryToConnectIfDisconnect: Boolean,
         disconnectCounter: Int,
         isWhiteLabel: Boolean,
@@ -434,6 +442,7 @@ class AxaSingleToneClass : IAPIAxaResponse {
         this.isWhiteLabel = isWhiteLabel
         this.whiteLabelPartnerKey = whiteLabelPartnerKey
         this.whiteLablePartnerID = whiteLablePartnerID
+        this.jwtHeaderLocal = jwtHeader
 
         if (mService != null) {
             Log.e("axaCnLib", "mService != null")
@@ -470,11 +479,21 @@ class AxaSingleToneClass : IAPIAxaResponse {
                 val params = HashMap<String, Any>()
                 params["object_id"] = passBookingObjectId
                 params["passkey_type"] = "otp"
-                AxaApiRequest.callPOSTAPI(
-                    mActivity, webServiceURL,
-                    params, TAG_AXA_UPDATE_EKEY, this, appVersion, authHeader,
-                    "", isWhiteLabel, whiteLabelPartnerKey, whiteLablePartnerID
-                )
+
+                if (jwtHeader.isEmpty()) {
+                    AxaApiRequest.callPOSTAPI(
+                        mActivity, webServiceURL,
+                        params, TAG_AXA_UPDATE_EKEY, this, appVersion, authHeader,
+                        "", isWhiteLabel, whiteLabelPartnerKey, whiteLablePartnerID
+                    )
+                } else {
+                    AxaApiRequest.callPOSTAPIWithJWT(
+                        mActivity, webServiceURL,
+                        params, TAG_AXA_UPDATE_EKEY, this, appVersion, authHeader, jwtHeader,
+                        "", isWhiteLabel, whiteLabelPartnerKey, whiteLablePartnerID
+                    )
+                }
+
             }
         } else {
             Log.e("axaCnLib", "mService == null")
