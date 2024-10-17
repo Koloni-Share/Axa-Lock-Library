@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity(), IAPIAxaLockCallback {
                     2, edtMacID.text.toString(),
                     edtAssetID.text.toString(), 0, 1,
                     "https://kolonishare.com/design/ws/v17/update_ekey",
-                    "5.1.3", "Basic YWRtaW46MTIzNA==", "", true, 0,
+                    "5.1.3", "Basic YWRtaW46MTIzNA==", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjkxNTU4MzQsImlzcyI6ImtvbG9uaXNoYXJlLmNvbSIsIm5iZiI6MTcyOTE1NTgzNCwiZXhwIjoxNzMwMzY1NDM0LCJpZCI6MjI2NH0.CLzfrmE8Ax2SQ-xInsnpJerCglzF0HMApwuX2PwIaRo", true, 0,
                     false, "", ""
                 )
             }

@@ -373,7 +373,7 @@ class AxaSingleToneClass : IAPIAxaResponse {
 
     @Throws(Exception::class)
     private fun parseUpdateAxaEkey(responce: String) {
-        Log.e("axaCnLib", "callPOSTAPIRESP")
+//        Log.e("axaCnLib", "callPOSTAPIRESP : $responce")
         if (jwtHeaderLocal.isEmpty()) {
             axaLockInterface.onAxaEkeyUpdatedSuccessfully("23", "")
         } else {
