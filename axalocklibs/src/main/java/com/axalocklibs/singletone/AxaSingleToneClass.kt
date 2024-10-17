@@ -1,6 +1,5 @@
 package com.axalocklibs.singletone
 
-import android.Manifest
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
@@ -8,13 +7,12 @@ import android.bluetooth.BluetoothManager
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanResult
 import android.content.*
-import android.content.pm.PackageManager
 import android.os.Handler
 import android.os.IBinder
 import android.util.Log
-import androidx.core.app.ActivityCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.BuildConfig
 import com.androidnetworking.interceptors.HttpLoggingInterceptor
 import com.axalocklibs.axainterface.IAPIAxaLockCallback
 import com.axalocklibs.axainterface.IAPIAxaResponse
@@ -22,7 +20,7 @@ import com.axalocklibs.service.AxaLockService
 import com.axalocklibs.service.AxaLockService.LocalBinder
 import com.axalocklibs.webservice.AxaApiRequest
 import com.google.gson.Gson
-import com.kolonishare.booking.model.ekey.ModelAxaEKeyResponse
+import com.axalocklibs.model.ekey.ModelAxaEKeyResponse
 import com.pixplicity.easyprefs.library.Prefs
 import java.text.DateFormat
 import java.util.*
@@ -589,7 +587,7 @@ class AxaSingleToneClass : IAPIAxaResponse {
         try {
             AndroidNetworking.initialize(activity)
 
-            if (com.axalocklibs.BuildConfig.DEBUG) {
+            if (BuildConfig.DEBUG) {
                 AndroidNetworking.enableLogging(HttpLoggingInterceptor.Level.BODY)
             }
 

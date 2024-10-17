@@ -1,4 +1,4 @@
-package com.kolonishare.booking.model.ekey
+package com.axalocklibs.model.ekey
 
 import com.google.gson.annotations.SerializedName
 

@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(), IAPIAxaLockCallback {
                 erlSingleToneClass!!.onUpdateAxaEKey(
                     2, edtMacID.text.toString(),
                     edtAssetID.text.toString(), 0, 1,
-                    "https://kolonishare.com/design/ws/v11/update_ekey",
+                    "https://kolonishare.com/design/ws/v17/update_ekey",
                     "5.1.3", "Basic YWRtaW46MTIzNA==", "", true, 0,
                     false, "", ""
                 )
