@@ -34,7 +34,7 @@ android {
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:2.1.0"
-    implementation 'androidx.core:core-ktx:1.17.0'
+    implementation 'androidx.core:core-ktx:1.18.0'
     implementation 'com.pixplicity.easyprefs:EasyPrefs:1.10.0'
     implementation 'com.github.amitshekhariitbhu.Fast-Android-Networking:rx2-android-networking:1.0.4'
     implementation "androidx.localbroadcastmanager:localbroadcastmanager:1.1.0"
